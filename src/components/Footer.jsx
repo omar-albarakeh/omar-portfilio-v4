@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
-import "./footer.css";
+import "./Footer.css";
 
 const Footer = () => {
   const [email, setEmail] = useState('');
