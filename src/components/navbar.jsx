@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import { FaGithub, FaEnvelope, FaFacebook, FaInstagram } from "react-icons/fa";
 
 function MyNavbar() {
   const [activeLink, setActiveLink] = useState("home");
@@ -64,6 +65,12 @@ function MyNavbar() {
 
           <div className="navbar-text">
             <div className="social-icon">
+              <a href="https://github.com/omar-albarakeh" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                            <FaGithub className="text-light fs-4" />
+                          </a>
+                          <a href="mailto:omaralbarakeh2@gmail.com" aria-label="Email">
+                            <FaEnvelope className="text-light fs-4" />
+                          </a>
               <a
                 href="https://www.facebook.com/omar.barakeh.967/"
                 target="_blank"

@@ -2,36 +2,53 @@ import { useState } from 'react';
 import { FaGithub, FaLinkedin, FaEnvelope, FaArrowRight } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
-import "./Footer.css";
+import './Footer.css';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-  const [error, setError] = useState('');
+  const [status, setStatus] = useState({});
+  const [buttonText, setButtonText] = useState('Subscribe');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email) {
-      setError('Please enter your email');
+      setStatus({ success: false, message: 'Please enter your email' });
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Please enter a valid email');
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setStatus({ success: false, message: 'Please enter a valid email' });
       return;
     }
+
+    setButtonText('Subscribing...');
+
+    const templateParams = {
+      user_email: email,
+      message: 'A new user just subscribed via the footer form.',
+    };
 
     emailjs
-      .send('service_twafpoj', 'template_enzqui8', { email })
+      .send(
+        'service_5teqdkq',         // ✅ Your EmailJS service ID
+        'template_jhxfzb5',        // ✅ Your EmailJS template ID
+        templateParams,
+        'F_xJjpn_wOkgV3FQr'        // ✅ Your public key
+      )
       .then(() => {
-        setSubscribed(true);
-        setError('');
+        setButtonText('Subscribe');
         setEmail('');
-        setTimeout(() => setSubscribed(false), 5000);
+        setStatus({ success: true, message: 'Thank you for subscribing!' });
+        setTimeout(() => setStatus({}), 5000);
       })
       .catch(() => {
-        setError('Failed to subscribe. Please try again.');
+        setButtonText('Subscribe');
+        setStatus({
+          success: false,
+          message: 'Something went wrong. Please try again later.',
+        });
       });
   };
 
@@ -39,22 +56,19 @@ const Footer = () => {
     <footer className="footer bg-dark text-light py-5">
       <div className="container">
         <div className="footer-top-row d-flex flex-column flex-md-row justify-content-between align-items-start gap-5">
-  {/* Logo + Tagline */}
-  <div className="footer-brand d-flex flex-column align-items-start">
-    <div className="d-flex align-items-center gap-2 mb-2">
-      <NavLink to="/" className="footer-logo text-white fs-4 fw-bold text-decoration-none">
-        Omar AlBarakeh
-      </NavLink>
-    </div>
-    <p className="footer-tagline mt-1 text-muted">
-      Building digital experiences that matter
-    </p>
-  </div>
+          <div className="footer-brand d-flex flex-column align-items-start">
+            <NavLink to="/" className="footer-logo text-white fs-4 fw-bold text-decoration-none">
+              Omar AlBarakeh
+            </NavLink>
+            <p className="footer-tagline mt-1 text-muted">
+              Building digital experiences that matter
+            </p>
+          </div>
 
-
-          {/* Newsletter */}
           <div className="footer-newsletter w-100 w-md-50">
-            <h3 className="footer-newsletter-title text-white mb-3"> Subscribe to get notified about my latest projects and updates.</h3>
+            <h3 className="footer-newsletter-title text-white mb-3">
+              Subscribe to get notified about my latest projects and updates.
+            </h3>
             <form onSubmit={handleSubmit} className="footer-form d-flex flex-column gap-2">
               <div className="footer-input-group d-flex">
                 <input
@@ -63,23 +77,24 @@ const Footer = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
                   className="form-control"
-                  disabled={subscribed}
+                  disabled={status.success}
                 />
-                <button type="submit" className="footer-submit ms-2" disabled={subscribed}>
-  <FaArrowRight />
-</button>
-
+                <button type="submit" className="footer-submit ms-2" disabled={status.success}>
+                  <FaArrowRight />
+                </button>
               </div>
-              {error && <p className="text-danger m-0">{error}</p>}
-              {subscribed && <p className="text-success m-0">Thank you for subscribing!</p>}
+              {status.message && (
+                <p className={`m-0 ${status.success ? 'text-success' : 'text-danger'}`}>
+                  {status.message}
+                </p>
+              )}
               <p className="footer-newsletter-text text-muted mt-2">
-                Subscribe to get notified about my latest projects and updates.
+                Stay connected with future updates.
               </p>
             </form>
           </div>
         </div>
 
-        {/* Bottom */}
         <div className="footer-bottom-row d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 pt-4 border-top border-secondary">
           <div className="footer-icons d-flex gap-3 mb-3 mb-md-0">
             <a href="https://github.com/omar-albarakeh" target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -94,7 +109,9 @@ const Footer = () => {
           </div>
 
           <div className="footer-legal text-center text-md-end">
-            <p className="footer-copy mb-1">© {new Date().getFullYear()} Omar AlBarakeh. All rights reserved.</p>
+            <p className="footer-copy mb-1">
+              © {new Date().getFullYear()} Omar AlBarakeh. All rights reserved.
+            </p>
             <div className="footer-legal-links d-flex gap-3 justify-content-center justify-content-md-end">
               <NavLink to="/privacy" className="text-decoration-none text-light">
                 Privacy Policy
