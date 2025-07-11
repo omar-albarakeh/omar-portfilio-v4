@@ -68,12 +68,19 @@ const Banner = () => {
                 I’m a passionate developer who builds modern web and mobile
                 experiences. Let’s create something amazing together!
               </p>
-              <button
-                onClick={() => console.log("connect")}
-                className="connect-button"
-                aria-label="Connect with Omar">
-                Let’s Connect <ArrowRightCircle size={25} />
-              </button>
+             <button
+  onClick={() => {
+    const section = document.getElementById("connect");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  }}
+  className="connect-button"
+  aria-label="Connect with Omar"
+>
+  Let’s Connect <ArrowRightCircle size={25} />
+</button>
+
             </motion.div>
           </Col>
           <Col xs={12} md={6} xl={5}>

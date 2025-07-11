@@ -1,6 +1,6 @@
 .whatsapp-float {
   position: fixed;
-  bottom: 24px;
+  bottom: 8rem;
   right: 24px;
   background-color: #25d366;
   color: #ffffff;
@@ -11,6 +11,9 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   animation: pulse 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .whatsapp-float:hover {
@@ -38,6 +41,8 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  user-select: none;
+  z-index: 10000;
 }
 
 .whatsapp-float:hover::after {
@@ -54,5 +59,52 @@
   }
   100% {
     box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* Responsive Adjustments */
+
+/* Medium screens and below */
+@media (max-width: 768px) {
+  .whatsapp-float {
+    bottom: 16px;
+    right: 16px;
+    padding: 0.75rem;
+  }
+  .whatsapp-icon {
+    font-size: 1.6rem;
+  }
+  /* Tooltip above the button */
+  .whatsapp-float::after {
+    top: auto;
+    bottom: 110%;
+    right: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Small screens - hide tooltip to avoid clutter */
+@media (max-width: 480px) {
+  .whatsapp-float::after {
+    display: none;
+  }
+}
+
+/* Optional: center button at bottom on very small screens */
+/*
+@media (max-width: 480px) {
+  .whatsapp-float {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+*/
+
+/* Dark mode tooltip inversion */
+@media (prefers-color-scheme: dark) {
+  .whatsapp-float::after {
+    background-color: #e2e8f0;
+    color: #0f172a;
   }
 }
